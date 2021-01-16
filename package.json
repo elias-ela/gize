@@ -1,0 +1,20 @@
+{
+  "name": "gize",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elias-ela/gize.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/elias-ela/gize/issues"
+  },
+  "homepage": "https://github.com/elias-ela/gize#readme"
+}
