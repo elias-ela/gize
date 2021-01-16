@@ -11,13 +11,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        
       - name: NodeSetup
         uses: actions/setup-node@v1
         with:
             node-version: 14
+          
       - name: Install
         run: npm ci
+        
       - name: Test
-        run: npm test
+        run: npm run test-coveralls
+        
       - name: Build
         run: npm run build
+      
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
