@@ -1,4 +1,4 @@
-name: gize-workflow
+name: gize build-test-deploy
 
 on:
   push:
@@ -6,13 +6,18 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-test-deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 14
-    - run: npm ci
-    - run: npm test
-    - run: npm run build
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: NodeSetup
+        uses: actions/setup-node@v1
+        with:
+            node-version: 14
+      - name: Install
+        run: npm ci
+      - name: Test
+        run: npm test
+      - name: Build
+        run: npm run build
