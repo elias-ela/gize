@@ -3,7 +3,7 @@ name: gize build-test-deploy
 on:
   push:
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-test-deploy:
@@ -11,21 +11,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
       - name: NodeSetup
         uses: actions/setup-node@v1
         with:
-            node-version: 14
-          
+          node-version: 14
+
       - name: Install
         run: npm ci
-        
+
       - name: Test
-        run: npm run test-coveralls
-        
+        run: npm run test-coverage
+
       - name: Build
         run: npm run build
-      
+
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
