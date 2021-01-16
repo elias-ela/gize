@@ -30,7 +30,6 @@
     "prebuild": "rimraf dist",
     "build": "rollup -c",
     "build-watch": "npm run build -- --watch",
-    "postbuild": "npm run deploy",
     "deploy": "gh-pages -d ./demo"
   },
   "husky": {
