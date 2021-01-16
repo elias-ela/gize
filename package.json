@@ -28,7 +28,8 @@
     "test-coveralls": "npm run test-coverage && coveralls < coverage/lcov.info",
     "test-watch": "jest --watch",
     "prebuild": "rimraf dist",
-    "build": "rollup -c && tsc"
+    "build": "rollup -c && tsc",
+    "build:dev": "rollup -c -w && tsc -w"
   },
   "husky": {
     "hooks": {
