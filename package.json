@@ -2,9 +2,9 @@
   "name": "gize",
   "version": "0.0.2",
   "description": "",
-  "main": "dist/gize.cjs.js",
-  "module": "dist/gize.es.js",
-  "browser": "dist/gize.iife.js",
+  "main": "dist/gize.cjs.min.js",
+  "module": "dist/gize.es.min.js",
+  "browser": "dist/gize.iife.min.js",
   "typings": "dist/gize.d.ts",
   "files": [
     "dist"
