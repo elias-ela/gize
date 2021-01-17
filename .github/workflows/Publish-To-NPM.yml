@@ -2,11 +2,10 @@ name: Publish-To-NPM
 
 on:
   release:
-  types: [published]
+    branches: [main]
 
 jobs:
   publish-to-npm:
-    needs: build-test-deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,7 +13,18 @@ jobs:
         with:
           node-version: 14
           registry-url: https://registry.npmjs.org/
+      
+      - name: Publish
       - run: npm ci
+      - run: npm run build
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: demo
+          clean: true
