@@ -1,6 +1,6 @@
 {
   "name": "gize",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "dist/gize.cjs.min.js",
   "module": "dist/gize.es.min.js",
