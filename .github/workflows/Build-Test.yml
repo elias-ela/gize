@@ -1,4 +1,4 @@
-name: Build-Test-Deploy
+name: Build-Test
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 jobs:
-  build-test-deploy:
+  build-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,11 +30,3 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          folder: demo
-          clean: true
