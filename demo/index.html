@@ -6,13 +6,86 @@
     <title>Demo</title>
   </head>
   <body>
-    <div id="container"></div>
-
+    <div id="container">
+      <div class="ethiopic">
+        <hr />
+        <h1>Ethiopic</h1>
+        <hr />
+        <div class="toJdn"></div>
+        <div class="fromJdn"></div>
+        <div class="isLeap"></div>
+        <hr />
+        <h1>Gregorian</h1>
+        <hr />
+        <div class="g_toJdn"></div>
+        <div class="g_fromJdn"></div>
+        <div class="g_isLeap"></div>
+      </div>
+      <div class="convertor">
+        <hr />
+        <h1>Ethiopic to Gregorian</h1>
+        <hr />
+        <div class="toEthiopic"></div>
+        <hr />
+        <h1>Gregorian to Ethiopic</h1>
+        <hr />
+        <div class="toGregorian"></div>
+      </div>
+    </div>
     <script src="https://unpkg.com/gize@latest/dist/gize.iife.min.js"></script>
     <script>
-      const { sayHello } = window.gize
-      const container = document.getElementById('container')
-      container.innerHTML = `<h1>${sayHello('World!')}</h1>`
+      const {
+        ethiopicCalendar,
+        toEthiopic,
+        gregorianCalendar,
+        toGregorian,
+      } = window.gize
+      // Ethiopic
+      const toJdn = document.querySelector('.toJdn')
+      toJdn.innerHTML = `<h1>Date: 10/05/2013 --- JDN: ${ethiopicCalendar.toJDN(
+        2013,
+        5,
+        10,
+      )}</h1>`
+
+      const fromJdn = document.querySelector('.fromJdn')
+      const value = ethiopicCalendar.fromJDN(2401443)
+      fromJdn.innerHTML = `<h1>JDN: 2401443 --- Date: ${value.day}/${value.month}/${value.year}</h1>`
+
+      const isLeap = document.querySelector('.isLeap')
+      isLeap.innerHTML = `<h1>Date: 2013 --- is leap year: ${ethiopicCalendar.isLeap(
+        2013,
+      )}</h1>
+                        <h1>Date: 2011 --- is leap year: ${ethiopicCalendar.isLeap(
+                          2011,
+                        )}</h1>`
+
+      // Gregorian
+      const g_toJdn = document.querySelector('.g_toJdn')
+      g_toJdn.innerHTML = `<h1>Date: 18/01/2021 --- JDN: ${gregorianCalendar.toJDN(
+        2021,
+        1,
+        18,
+      )}</h1>`
+
+      const g_fromJdn = document.querySelector('.g_fromJdn')
+      const g_value = gregorianCalendar.fromJDN(2401443)
+      g_fromJdn.innerHTML = `<h1>JDN: 2401443 --- Date: ${g_value.day}/${g_value.month}/${g_value.year}</h1>`
+
+      const g_isLeap = document.querySelector('.g_isLeap')
+      g_isLeap.innerHTML = `<h1>Date: 2021 --- is leap year: ${gregorianCalendar.isLeap(
+        2021,
+      )}</h1>
+                        <h1>Date: 2020 --- is leap year: ${gregorianCalendar.isLeap(
+                          2020,
+                        )}</h1>`
+
+      const to_Ethiopic = document.querySelector('.toEthiopic')
+      const to_Gregorian = document.querySelector('.toGregorian')
+      const e_value = toEthiopic(1862, 10, 29)
+      const cg_value = toGregorian(1857, 10, 29)
+      to_Ethiopic.innerHTML = `<h1>Gregorian Date: 29/10/1862 --- Ethiopic Date: ${e_value.day}/${e_value.month}/${e_value.year}</h1>`
+      to_Gregorian.innerHTML = `<h1>Ethiopic Date: 29/10/1857  --- Gregorian Date: ${cg_value.day}/${cg_value.month}/${cg_value.year}</h1>`
     </script>
   </body>
 </html>
