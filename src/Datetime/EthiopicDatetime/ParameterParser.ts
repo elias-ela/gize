@@ -18,38 +18,38 @@ export function parseParameters(parameters: any) {
     processInput(parameters[0])
     processInput(parameters[1])
   } else if (parameters.length === 3) {
-    const [y, m, d] = parameters
-    initialValues.moment = dateToEpoch(
-      Number(y),
-      Number(m),
-      Number(d),
-      0,
-      0,
-      0,
-      0,
-    )
+    const [year, month, day] = parameters
+    initialValues.moment = dateToEpoch({
+      year: Number(year),
+      month: Number(month),
+      day: Number(day),
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+    })
   } else if (parameters.length === 6) {
-    const [y, m, d, h, mi, s] = parameters
-    initialValues.moment = dateToEpoch(
-      Number(y),
-      Number(m),
-      Number(d),
-      Number(h),
-      Number(mi),
-      Number(s),
-      0,
-    )
+    const [year, month, day, hour, minute, second] = parameters
+    initialValues.moment = dateToEpoch({
+      year: Number(year),
+      month: Number(month),
+      day: Number(day),
+      hour: Number(hour),
+      minute: Number(minute),
+      second: Number(second),
+      millisecond: 0,
+    })
   } else if (parameters.length === 7) {
-    const [y, m, d, h, mi, s, ms] = parameters
-    initialValues.moment = dateToEpoch(
-      Number(y),
-      Number(m),
-      Number(d),
-      Number(h),
-      Number(mi),
-      Number(s),
-      Number(ms),
-    )
+    const [year, month, day, hour, minute, second, millisecond] = parameters
+    initialValues.moment = dateToEpoch({
+      year: Number(year),
+      month: Number(month),
+      day: Number(day),
+      hour: Number(hour),
+      minute: Number(minute),
+      second: Number(second),
+      millisecond: Number(millisecond),
+    })
   } else {
     throw new TypeError(`Invalid Argument ${parameters}`)
   }
@@ -86,25 +86,25 @@ function processConfig(config: Config): void {
 function processDatetime(datetime: Datetime): void {
   const { year, month, day, hour, minute, second, millisecond } = datetime
   if (year && month && day && hour && minute && second && millisecond) {
-    initialValues.moment = dateToEpoch(
-      Number(year),
-      Number(month),
-      Number(day),
-      Number(hour),
-      Number(minute),
-      Number(second),
-      Number(millisecond),
-    )
+    initialValues.moment = dateToEpoch({
+      year: Number(year),
+      month: Number(month),
+      day: Number(day),
+      hour: Number(hour),
+      minute: Number(minute),
+      second: Number(second),
+      millisecond: Number(millisecond),
+    })
   } else if (year && month && day) {
-    initialValues.moment = dateToEpoch(
-      Number(year),
-      Number(month),
-      Number(day),
-      0,
-      0,
-      0,
-      0,
-    )
+    initialValues.moment = dateToEpoch({
+      year: Number(year),
+      month: Number(month),
+      day: Number(day),
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+    })
   } else {
     initialValues.moment = Date.now()
   }
