@@ -1,8 +1,6 @@
 import { BasicDate } from './BasicDate'
 
 export interface ICalendar {
-  readonly name: string
-  readonly epoch: number
   /**
    * Test if a year is leap year or not.
    * @param {number} year
@@ -30,5 +28,5 @@ export interface ICalendar {
    * @param {number} year
    * @returns void.
    */
-  validator(year: number, month: number, day: number): void
+  validator(year: number, month: number, day: number): boolean
 }

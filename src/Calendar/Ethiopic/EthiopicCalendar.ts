@@ -2,15 +2,8 @@ import { CalendarError, mod } from '../Core'
 import { BasicDate } from '../Core/BasicDate'
 import { ICalendar } from '../Core/ICalendar'
 
+const epoch = 1724220.5
 export class EthiopicCalendar implements ICalendar {
-  name: string
-  epoch: number
-
-  constructor() {
-    this.name = 'ethiopic'
-    this.epoch = 1724220.5
-  }
-
   isLeap(year: number): boolean {
     return mod(year, 4) === 3
   }
@@ -19,7 +12,7 @@ export class EthiopicCalendar implements ICalendar {
     this.validator(year, month, day)
 
     return (
-      this.epoch -
+      epoch -
       1 +
       365 * (year - 1) +
       Math.floor(year / 4) +
@@ -29,14 +22,14 @@ export class EthiopicCalendar implements ICalendar {
   }
 
   fromJDN(jdn: number): BasicDate {
-    const year = Math.floor((4 * (jdn - this.epoch) + 1463) / 1461)
+    const year = Math.floor((4 * (jdn - epoch) + 1463) / 1461)
     const month = 1 + Math.floor((jdn - this.toJDN(year, 1, 1)) / 30)
     const day = jdn + 1 - this.toJDN(year, month, 1)
 
     return new BasicDate(year, month, day, jdn)
   }
 
-  validator(year: number, month: number, day: number): void {
+  validator(year: number, month: number, day: number): boolean {
     // month cannot be more than 13 or less than 1.
     if (month < 1 || month > 13) {
       throw new CalendarError('INVALID_MONTH')
@@ -52,5 +45,7 @@ export class EthiopicCalendar implements ICalendar {
     if (day < 1 || day > 30) {
       throw new CalendarError('INVALID_DAY')
     }
+
+    return true
   }
 }
