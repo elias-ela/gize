@@ -2,10 +2,7 @@ export const localeProvider = (locale: string) => {
   return getProperty(data, locale)
 }
 
-export const getProperty = <T, K extends keyof T>(
-  o: T,
-  propertyName: K,
-): T[K] => {
+const getProperty = <T, K extends keyof T>(o: T, propertyName: K): T[K] => {
   return o[propertyName]
 }
 
@@ -25,12 +22,10 @@ const data: { [key: string]: { [key: string]: string[] } } = {
     dayNames: 'እሁድ_ሰኞ_ማክሰኞ_ረቡዕ_ሐሙስ_አርብ_ቅዳሜ'.split('_'),
   },
   or: {
-    monthNames: 'Ammajjii_Guraandhala_Bitootess_Ebla_Caamsaa_Waxabajjii_Adoolessa_Hagayya_Fulbaana_Onkololeessa_Sadaasa_Muddee_Qaammee'.split(
+    monthNames: 'Fulbaana_Onkololeessa_Sadaasa_Muddee_Ammajjii_Guraandhala_Bitootess_Ebla_Caamsaa_Waxabajjii_Adoolessa_Hagayya_Qaammee'.split(
       '_',
     ),
-    dayNames: 'Dilbata_Wizata_Kibxata_Roobii_Kamisa_Jimaata_Sambata_Dilbata'.split(
-      '_',
-    ),
+    dayNames: 'Sambata_Wixata_Kibxata_Roobii_Kamisa_Jimaata_Dilbata'.split('_'),
   },
   ti: {
     monthNames: 'መስከረም_ጥቅምቲ_ሕዳር_ታሕሳስ_ጥሪ_ለካቲት_መጋቢት_ሚያዝያ_ግንቦት_ ሰነ_ሓምለ_ነሓሰ_ጷጉሜን'.split(
@@ -51,7 +46,7 @@ const data: { [key: string]: { [key: string]: string[] } } = {
     dayNames: 'Ehud_Segno_Maksegno_Irob_Hamus_Arb_Kidame'.split('_'),
   },
   en_am: {
-    monthNames: 'ጃንዋሪ_ፈብርዋሪ_ማርች_አፕሪል_ሜይ_ጁን_ጁላይ_ኦገስት_ሴፕቴምበር_ኦክቶበር_ኖቬምበር_ዲሴምበር'.split(
+    monthNames: 'ሴፕቴምበር_ኦክቶበር_ኖቬምበር_ዲሴምበር_ጃንዋሪ_ፈብርዋሪ_ማርች_አፕሪል_ሜይ_ጁን_ጁላይ_ኦገስት'.split(
       '_',
     ),
     dayNames: 'ሰንዴይ_መንዴይ_ትዩስዴይ_ዌንስዴይ_ተርሰዴይ_ፍራይዴይ_ሳተርዴይ'.split('_'),
