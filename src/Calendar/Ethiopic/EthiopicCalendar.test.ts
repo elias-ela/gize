@@ -22,7 +22,7 @@ describe('EthiopicCalendar', () => {
     expect(EC.isLeap(2013)).toEqual(false)
   })
 
-  test('should not throw a calendar error', () => {
-    expect(EC.validator(2013, 13, 5)).toBe(undefined)
+  test('should return true for leap day', () => {
+    expect(EC.validator(2011, 13, 6)).toBeTruthy()
   })
 })
