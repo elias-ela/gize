@@ -5,7 +5,7 @@
   "main": "dist/gize.cjs.min.js",
   "module": "dist/gize.es.min.js",
   "browser": "dist/gize.iife.min.js",
-  "typings": "dist/gize.d.ts",
+  "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],

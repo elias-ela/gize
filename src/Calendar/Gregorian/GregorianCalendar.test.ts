@@ -4,11 +4,11 @@ import { BasicDate } from '../Core'
 describe('EthiopicCalendar', () => {
   const GC = new GregorianCalendar()
 
-  test('should convert ethiopic date to jdn', () => {
+  test('should convert gregorian date to jdn', () => {
     expect(GC.toJDN(1866, 1, 29)).toEqual(2402630.5)
   })
 
-  test('should convert from jdn to ethiopic date', () => {
+  test('should convert from jdn to gregorian date', () => {
     expect(GC.fromJDN(2402709)).toEqual(new BasicDate(1866, 4, 17, 2402709))
   })
 
@@ -20,7 +20,7 @@ describe('EthiopicCalendar', () => {
     expect(GC.isLeap(2021)).toEqual(false)
   })
 
-  test('should not throw a calendar error', () => {
-    expect(GC.validator(2020, 2, 29)).toBe(undefined)
+  test('should return true for leap day', () => {
+    expect(GC.validator(2020, 2, 29)).toBeTruthy()
   })
 })

@@ -1,30 +1,48 @@
 export class BasicDate {
-  private _day: number
-  private _month: number
-  private _year: number
-  private _jdn: number | undefined
-
-  constructor(year: number, month: number, day: number, jdn?: number) {
-    this._day = day
-    this._month = month
-    this._year = year
-
-    if (jdn !== undefined) this._jdn = jdn
-  }
-
-  public get day(): number {
-    return this._day
-  }
-
-  public get month(): number {
-    return this._month
-  }
-
-  public get year(): number {
-    return this._year
-  }
-
-  public get jdn(): number | undefined {
-    return this._jdn
+  jdn?: number
+  year?: number
+  month?: number
+  day?: number
+  hour?: number
+  minute?: number
+  second?: number
+  millisecond?: number
+  constructor(...args: number[]) {
+    const numArgs = args.length
+    switch (numArgs) {
+      case 1:
+        this.jdn = args[0]
+        break
+      case 3:
+        this.year = args[0]
+        this.month = args[1]
+        this.day = args[2]
+        break
+      case 4:
+        this.year = args[0]
+        this.month = args[1]
+        this.day = args[2]
+        if (args[3] !== undefined) this.jdn = args[3]
+        break
+      case 6:
+        this.year = args[0]
+        this.month = args[1]
+        this.day = args[2]
+        if (args[3] !== undefined) this.hour = args[3]
+        if (args[4] !== undefined) this.minute = args[4]
+        if (args[5] !== undefined) this.second = args[5]
+        break
+      case 7:
+        this.year = args[0]
+        this.month = args[1]
+        this.day = args[2]
+        if (args[3] !== undefined) this.hour = args[3]
+        if (args[4] !== undefined) this.minute = args[4]
+        if (args[5] !== undefined) this.second = args[5]
+        if (args[6] !== undefined) this.millisecond = args[6]
+        break
+      default:
+        break
+    }
   }
 }

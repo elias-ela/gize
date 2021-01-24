@@ -1,3 +1,4 @@
+import { Datetime } from '../Interfaces'
 import { Constants, checkRequiredArgs } from '../Utils'
 
 export function fromUnix(ms: number): number {
@@ -5,34 +6,33 @@ export function fromUnix(ms: number): number {
   return Constants.unixEpoch + Math.floor(ms / 86400000)
 }
 
-export function fromEthiopic(year: number, month: number, day: number): number {
-  checkRequiredArgs(arguments, 3)
+export function fromEthiopic(date: Datetime): number {
+  const { year, month, day } = date
+  checkRequiredArgs(arguments, 1)
   return Math.floor(
     Constants.ethiopicEpoch -
       1 +
-      365 * (year - 1) +
-      year / 4 +
-      30 * (month - 1) +
-      day,
+      365 * (Number(year) - 1) +
+      Number(year) / 4 +
+      30 * (Number(month) - 1) +
+      Number(day),
   )
 }
 
-export function dateToEpoch(
-  year: number,
-  month: number,
-  day: number,
-  hour: number,
-  minute: number,
-  second: number,
-  millisecond: number,
-): number {
-  checkRequiredArgs(arguments, 7)
+export function dateToEpoch(date: Datetime): number {
+  checkRequiredArgs(arguments, 1)
+  const { year, month, day, hour, minute, second, millisecond } = date
   return (
-    (fromEthiopic(year, month, day) - Constants.unixEpoch) *
+    (fromEthiopic({
+      year: Number(year),
+      month: Number(month),
+      day: Number(day),
+    }) -
+      Constants.unixEpoch) *
       Constants.millisecondPerDay +
-    hour * Constants.millisecondsPerHour +
-    minute * Constants.millisecondsPerMinute +
-    second * Constants.millisecondsPerSecond +
-    millisecond
+    Number(hour) * Constants.millisecondsPerHour +
+    Number(minute) * Constants.millisecondsPerMinute +
+    Number(second) * Constants.millisecondsPerSecond +
+    Number(millisecond)
   )
 }

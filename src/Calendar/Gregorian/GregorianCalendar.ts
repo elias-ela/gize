@@ -1,14 +1,8 @@
 import { mod, CalendarError, BasicDate, ICalendar } from '../Core'
 
+const epoch = 1721425.5
+const MONTH_MAX_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 export class GregorianCalendar implements ICalendar {
-  name: string
-  epoch: number
-  MONTH_MAX_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-  constructor() {
-    this.name = 'gregorian'
-    this.epoch = 1721425.5
-  }
-
   /**
    * Test if a year is leap year or not.
    * @param {number} year
@@ -33,7 +27,7 @@ export class GregorianCalendar implements ICalendar {
     const isLeapYear = this.isLeap(year)
 
     const jdn =
-      this.epoch -
+      epoch -
       1 +
       365 * y1 +
       Math.floor(y1 / 4) -
@@ -68,7 +62,7 @@ export class GregorianCalendar implements ICalendar {
     return new BasicDate(year, month, day, jdn)
   }
 
-  validator(year: number, month: number, day: number): void {
+  validator(year: number, month: number, day: number): boolean {
     // Month cannot be less than 1 or greater than 12.
     if (month < 1 || month > 12) {
       throw new CalendarError('INVALID_MONTH')
@@ -80,14 +74,16 @@ export class GregorianCalendar implements ICalendar {
     }
 
     // February can only be 28 or 29 days.
-    const maxDays: number = this.isLeap(year) ? 29 : 28
-    if (month === 2 && day <= maxDays) {
-      return
+    MONTH_MAX_DAYS[1] = this.isLeap(year) ? 29 : 28
+    if (month === 2 && day > MONTH_MAX_DAYS[1]) {
+      throw new CalendarError('INVALID_LEAP_DAY')
     }
 
-    if (this.MONTH_MAX_DAYS[month - 1] < day) {
+    if (MONTH_MAX_DAYS[month - 1] < day) {
       throw new CalendarError('INVALID_DAY')
     }
+
+    return true
   }
 
   /**
@@ -97,7 +93,7 @@ export class GregorianCalendar implements ICalendar {
    */
   private jdnToYear = (jdn: number): number => {
     const jd0: number = Math.floor(jdn - 0.5) + 0.5
-    const depoch: number = jd0 - this.epoch
+    const depoch: number = jd0 - epoch
     const quadricent: number = Math.floor(depoch / 146097)
     const dqc: number = mod(depoch, 146097)
     const cent: number = Math.floor(dqc / 36524)
