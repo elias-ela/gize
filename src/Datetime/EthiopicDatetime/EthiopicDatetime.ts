@@ -4,18 +4,18 @@ import { localeProvider } from '../Locale'
 import { checkRequiredArgs, Constants, padLeft } from '../Utils'
 import { dateToEpoch, fromEthiopic, fromUnix } from './Convertor'
 
-let initialValues: initConfig
 export class EthiopicDatetime implements IEthiopicDatetime {
+  private initialValues!: initConfig
   constructor(...args: any) {
-    initialValues = parseParameters(args)
+    this.initialValues = parseParameters(args)
   }
 
-  toNumber(date: Datetime): { [key: string]: number } {
+  private toNumber(date: Datetime): { [key: string]: number } {
     let { year, month, day, hour, minute, second, millisecond } = date
     year = typeof year !== 'undefined' ? Number(year) : this.getFullYear()
     month = typeof month !== 'undefined' ? Number(month) : this.getMonth()
     day = typeof day !== 'undefined' ? Number(day) : this.getDate()
-    hour = typeof hour !== 'undefined' ? Number(hour) : this.getHours()
+    hour = typeof hour !== 'undefined' ? Number(hour) : this.getUTCHours()
     minute = typeof minute !== 'undefined' ? Number(minute) : this.getMinutes()
     second = typeof second !== 'undefined' ? Number(second) : this.getSeconds()
     millisecond =
@@ -26,8 +26,8 @@ export class EthiopicDatetime implements IEthiopicDatetime {
     return { year, month, day, hour, minute, second, millisecond }
   }
 
-  getString(): { [key: string]: string | number } {
-    const localeData = localeProvider(initialValues.locale)
+  private getString(): { [key: string]: string | number } {
+    const localeData = localeProvider(this.initialValues.locale)
     const day = this.getDay()
     const month = this.getMonth()
     const dayName = localeData?.dayNames[day].trim()
@@ -41,7 +41,7 @@ export class EthiopicDatetime implements IEthiopicDatetime {
     }
   }
 
-  get(): Datetime {
+  getDatetime(): Datetime {
     return {
       year: padLeft(this.getFullYear(), 1),
       month: padLeft(this.getMonth(), 1),
@@ -53,13 +53,14 @@ export class EthiopicDatetime implements IEthiopicDatetime {
     }
   }
 
-  set(date: Datetime): number {
+  setDatetime(date: Datetime): EthiopicDatetime {
     const values = this.toNumber(date)
-    return (initialValues.moment = dateToEpoch(values))
+    this.initialValues.moment = dateToEpoch(values)
+    return this
   }
 
   toString(): string {
-    const { year, day, hour, minute, second } = this.get()
+    const { year, day, hour, minute, second } = this.getDatetime()
     const { dayName, monthName, timezone } = this.getString()
     return `${dayName} ${monthName} ${day} ${year} ${hour}:${minute}:${second} GMT+${padLeft(
       timezone,
@@ -68,29 +69,29 @@ export class EthiopicDatetime implements IEthiopicDatetime {
   }
 
   toDateString(): string {
-    const { year, day } = this.get()
+    const { year, day } = this.getDatetime()
     const { dayName, monthName } = this.getString()
     return `${dayName} ${monthName} ${day} ${year}`
   }
 
   toTimeString(): string {
-    const { hour, minute, second } = this.get()
+    const { hour, minute, second } = this.getDatetime()
     const timezone = Constants.timeZoneOffset
     return `${hour}:${minute}:${second} GMT+${padLeft(timezone, 1)}00`
   }
 
   toLocaleString(): string {
-    const { year, month, day, hour, minute, second } = this.get()
+    const { year, month, day, hour, minute, second } = this.getDatetime()
     return `${day}/${month}/${year}, ${hour}:${minute}:${second} ${this.getMeridiem()}`
   }
 
   toLocaleDateString(): string {
-    const { year, month, day } = this.get()
+    const { year, month, day } = this.getDatetime()
     return `${day}/${month}/${year}`
   }
 
   toLocaleTimeString(): string {
-    const { hour, minute, second } = this.get()
+    const { hour, minute, second } = this.getDatetime()
     return `${hour}:${minute}:${second} ${this.getMeridiem()}`
   }
 
@@ -99,17 +100,18 @@ export class EthiopicDatetime implements IEthiopicDatetime {
   }
 
   getMeridiem(): string {
-    if (initialValues.hour12) return this.getHours() >= 12 ? 'PM' : 'AM'
+    if (this.initialValues.hour12) return this.getHours() >= 12 ? 'PM' : 'AM'
     else return ''
   }
 
   getTime(): number {
-    return initialValues.moment
+    return this.initialValues.moment
   }
 
   getFullYear(): number {
     return Math.floor(
-      (4 * (fromUnix(initialValues.moment) - Constants.ethiopicEpoch) + 1463) /
+      (4 * (fromUnix(this.initialValues.moment) - Constants.ethiopicEpoch) +
+        1463) /
         1461,
     )
   }
@@ -117,7 +119,7 @@ export class EthiopicDatetime implements IEthiopicDatetime {
   getMonth(): number {
     return (
       Math.floor(
-        (fromUnix(initialValues.moment) -
+        (fromUnix(this.initialValues.moment) -
           fromEthiopic({ year: this.getFullYear(), month: 1, day: 1 })) /
           30,
       ) + 1
@@ -126,7 +128,7 @@ export class EthiopicDatetime implements IEthiopicDatetime {
 
   getDate(): number {
     return (
-      fromUnix(initialValues.moment) +
+      fromUnix(this.initialValues.moment) +
       1 -
       fromEthiopic({ year: this.getFullYear(), month: this.getMonth(), day: 1 })
     )
@@ -142,7 +144,7 @@ export class EthiopicDatetime implements IEthiopicDatetime {
   getHours(): number {
     // Accounting for the timezone offset
     let ethiopicTime: number
-    if (initialValues.hour12) {
+    if (this.initialValues.hour12) {
       ethiopicTime = (this.getUTCHours() + Constants.timeZoneOffset) % 12
       ethiopicTime = ethiopicTime || 12
     } else ethiopicTime = this.getUTCHours() + Constants.timeZoneOffset
@@ -150,13 +152,15 @@ export class EthiopicDatetime implements IEthiopicDatetime {
   }
 
   getUTCHours(): number {
-    return Math.floor(initialValues.moment / Constants.millisecondsPerHour) % 24
+    return (
+      Math.floor(this.initialValues.moment / Constants.millisecondsPerHour) % 24
+    )
   }
 
   getMinutes(): number {
     return (
       Math.floor(
-        Math.abs(initialValues.moment / Constants.millisecondsPerMinute),
+        Math.abs(this.initialValues.moment / Constants.millisecondsPerMinute),
       ) % 60
     )
   }
@@ -164,46 +168,52 @@ export class EthiopicDatetime implements IEthiopicDatetime {
   getSeconds(): number {
     return (
       Math.floor(
-        Math.abs(initialValues.moment / Constants.millisecondsPerSecond),
+        Math.abs(this.initialValues.moment / Constants.millisecondsPerSecond),
       ) % 60
     )
   }
 
   getMilliseconds(): number {
-    return Math.abs(initialValues.moment % 1000)
+    return Math.abs(this.initialValues.moment % 1000)
   }
 
   getTimezoneOffset(): number {
     return -Constants.timeZoneOffset * 60
   }
 
-  setTime(time: number): number {
+  setTime(time: number): EthiopicDatetime {
     checkRequiredArgs(arguments, 1)
-    return (initialValues.moment = Number(time))
+    this.initialValues.moment = Number(time)
+    return this
   }
 
-  setMilliseconds(ms: number): number {
+  setMilliseconds(ms: number): EthiopicDatetime {
     checkRequiredArgs(arguments, 1)
-    return this.set({ millisecond: ms })
+    return this.setDatetime({ millisecond: ms })
   }
 
-  setSeconds(sec: number, ms?: number): number {
+  setSeconds(sec: number, ms?: number): EthiopicDatetime {
     checkRequiredArgs(arguments, 1)
-    return this.set({ second: sec, millisecond: ms })
+    return this.setDatetime({ second: sec, millisecond: ms })
   }
 
-  setMinutes(min: number, sec?: number, ms?: number): number {
+  setMinutes(min: number, sec?: number, ms?: number): EthiopicDatetime {
     checkRequiredArgs(arguments, 1)
-    return this.set({
+    return this.setDatetime({
       minute: min,
       second: sec,
       millisecond: ms,
     })
   }
 
-  setHours(hours: number, min?: number, sec?: number, ms?: number): number {
+  setHours(
+    hours: number,
+    min?: number,
+    sec?: number,
+    ms?: number,
+  ): EthiopicDatetime {
     checkRequiredArgs(arguments, 1)
-    return this.set({
+    return this.setDatetime({
       hour: hours,
       minute: min,
       second: sec,
@@ -211,24 +221,24 @@ export class EthiopicDatetime implements IEthiopicDatetime {
     })
   }
 
-  setDate(date: number): number {
+  setDate(date: number): EthiopicDatetime {
     checkRequiredArgs(arguments, 1)
-    return this.set({
+    return this.setDatetime({
       day: date,
     })
   }
 
-  setMonth(month: number, date?: number): number {
+  setMonth(month: number, date?: number): EthiopicDatetime {
     checkRequiredArgs(arguments, 1)
-    return this.set({
+    return this.setDatetime({
       month: month,
       day: date,
     })
   }
 
-  setFullYear(year: number, month?: number, date?: number): number {
+  setFullYear(year: number, month?: number, date?: number): EthiopicDatetime {
     checkRequiredArgs(arguments, 1)
-    return this.set({
+    return this.setDatetime({
       year: year,
       month: month,
       day: date,
@@ -236,7 +246,7 @@ export class EthiopicDatetime implements IEthiopicDatetime {
   }
 
   toISOString(): string {
-    const { year, month, day, minute, second, millisecond } = this.get()
+    const { year, month, day, minute, second, millisecond } = this.getDatetime()
     const hour = padLeft(this.getUTCHours(), 1)
     return `${year}-${month}-${day}T${hour}:${minute}:${second}.${millisecond}Z`
   }
