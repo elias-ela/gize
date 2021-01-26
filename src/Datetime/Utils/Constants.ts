@@ -11,3 +11,13 @@ export const Constants = {
   ameteFida: 5500,
   timeZoneOffset: +3,
 }
+
+export const enum weekdays {
+  SUNDAY = 0,
+  MONDAY,
+  TUESDAY,
+  WEDNESDAY,
+  THURSDAY,
+  FRIDAY,
+  SATURDAY,
+}

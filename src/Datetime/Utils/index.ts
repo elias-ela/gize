@@ -1,3 +1,3 @@
 export { padLeft } from './PadLeft'
 export { checkRequiredArgs } from './CheckRequiredArgs'
-export { Constants } from './Constants'
+export { Constants, weekdays } from './Constants'
