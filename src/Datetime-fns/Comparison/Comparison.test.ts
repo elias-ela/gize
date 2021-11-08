@@ -561,7 +561,7 @@ describe('isPast', () => {
 
   test('should return false if the date is greater than or equal to today', () => {
     expect(isPast(new EthiopicDatetime())).toBeFalsy()
-    expect(isPast(new EthiopicDatetime(2013, 5, 19))).toBeFalsy()
+    expect(isPast(new EthiopicDatetime(2113, 5, 19))).toBeFalsy()
   })
 
   test('should return false if the date is `Invalid EthiopicDatetime`', () => {
@@ -575,7 +575,7 @@ describe('isPast', () => {
 
 describe('isFuture', () => {
   test('should return true if the date is greater than today', () => {
-    expect(isFuture(new EthiopicDatetime(2013, 5, 20))).toBeTruthy()
+    expect(isFuture(new EthiopicDatetime(2113, 5, 20))).toBeTruthy()
   })
 
   test('should return false if the date is less than or equal to today', () => {
