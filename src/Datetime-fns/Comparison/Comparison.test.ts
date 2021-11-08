@@ -25,6 +25,7 @@ import {
   isSunday,
 } from '.'
 import { EthiopicDatetime } from '../../Datetime'
+import { toEthiopic } from "../../Calendar/Convertor";
 
 describe('isEqual', () => {
   test('should return true if the given dates are equal', () => {
@@ -594,8 +595,10 @@ describe('isFuture', () => {
 
 describe('isYesterday', () => {
   test('should return true if the date is yesterday', () => {
-    const today = new EthiopicDatetime(2013, 5, 17)
-    expect(isYesterday(today)).toBeTruthy()
+    const yesterdayInGc = new Date(Date.now() - 86400000)
+    const yesterday = toEthiopic(yesterdayInGc.getFullYear(), yesterdayInGc.getMonth() + 1, yesterdayInGc.getDate())
+    const yesterdayInEC = new EthiopicDatetime(yesterday.year, yesterday.month, yesterday.day)
+    expect(isYesterday(yesterdayInEC)).toBeTruthy()
   })
 
   test('should return false if the date is other than yesterday', () => {
