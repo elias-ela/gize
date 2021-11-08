@@ -25,6 +25,7 @@ import {
   isSunday,
 } from '.'
 import { EthiopicDatetime } from '../../Datetime'
+import { toEthiopic } from "../../Calendar/Convertor";
 
 describe('isEqual', () => {
   test('should return true if the given dates are equal', () => {
@@ -561,7 +562,7 @@ describe('isPast', () => {
 
   test('should return false if the date is greater than or equal to today', () => {
     expect(isPast(new EthiopicDatetime())).toBeFalsy()
-    expect(isPast(new EthiopicDatetime(2013, 5, 19))).toBeFalsy()
+    expect(isPast(new EthiopicDatetime(2113, 5, 19))).toBeFalsy()
   })
 
   test('should return false if the date is `Invalid EthiopicDatetime`', () => {
@@ -575,7 +576,7 @@ describe('isPast', () => {
 
 describe('isFuture', () => {
   test('should return true if the date is greater than today', () => {
-    expect(isFuture(new EthiopicDatetime(2013, 5, 20))).toBeTruthy()
+    expect(isFuture(new EthiopicDatetime(2113, 5, 20))).toBeTruthy()
   })
 
   test('should return false if the date is less than or equal to today', () => {
@@ -594,8 +595,10 @@ describe('isFuture', () => {
 
 describe('isYesterday', () => {
   test('should return true if the date is yesterday', () => {
-    const today = new EthiopicDatetime(2013, 5, 17)
-    expect(isYesterday(today)).toBeTruthy()
+    const yesterdayInGc = new Date(Date.now() - 86400000)
+    const yesterday = toEthiopic(yesterdayInGc.getFullYear(), yesterdayInGc.getMonth() + 1, yesterdayInGc.getDate())
+    const yesterdayInEC = new EthiopicDatetime(yesterday.year, yesterday.month, yesterday.day)
+    expect(isYesterday(yesterdayInEC)).toBeTruthy()
   })
 
   test('should return false if the date is other than yesterday', () => {
